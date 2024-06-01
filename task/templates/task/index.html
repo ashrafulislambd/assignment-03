@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Tasks</h1>
+    <div class="d-flex flex-wrap">
+        {% for task in tasks %}
+            <div class="card m-2" style="width: 18rem;">
+                <div class="card-body">
+                <h5 class="card-title">{{ task.taskTitle }}</h5>
+                <span>Date: {{ task.task_assigned }}</span>
+                <p class="card-text">Description: {{ task.taskDescription }}</p>
+                {% if not task.is_completed %}
+                    <form action="{% url 'task:delete' %}" method="POST">
+                        {% csrf_token %}
+                        <a href="{% url 'task:edit' task.id %}" class="btn btn-primary">Edit</a>
+                        <input type="hidden" name="task_id" value="{{ task.id }}" />
+                        <button type="submit" class="btn btn-primary">Delete</button>
+                    </form>
+                {% else %}
+                    <span>Completed</span>
+                {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+
